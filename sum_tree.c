@@ -12,9 +12,10 @@ int isEmpty();
 void push(int);
 typedef struct Node{
 	int num;
-	struct node *parent;
+	struct Node *parent;
 }node;
 node* new_node(int x);
+void free_mem(node*);
 int main(void)
 {
 	char str[] = "(7(8(0 2 4)0 9(10 2(0 6))))\0";
@@ -97,6 +98,8 @@ int main(void)
 		}
 		printf("\n");
 	}
+	for(l=0;l<k;l++)
+		free_mem(p[l]);
 	return 0;
 }
 node* new_node(int x)
@@ -134,4 +137,17 @@ void copy(void)
 		stack[i] = cp_stk[i];
 	}
 	top = cp_top;
+}
+void free_mem(node* k)
+{
+	if(!k->parent)
+	{
+		free(k);
+		return;
+	}
+	else
+	{
+		printf("k->num=%d\n",k->num);
+		free_mem(k->parent);
+	}
 }
